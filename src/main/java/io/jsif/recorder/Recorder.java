@@ -12,20 +12,20 @@ import static io.jsif.Config.ROOT_PATH;
 public class Recorder {
     final private WireMockServer wireMockServer;
     final private String proxyTo;
-    final private String rootPath;
+    final private String recordingPath;
 
     public Recorder(int port, String proxyTo, String pathToSave) {
         this.proxyTo = proxyTo;
 
-        this.rootPath = ROOT_PATH + pathToSave;
+        this.recordingPath = ROOT_PATH + pathToSave;
         Options options = new WireMockConfiguration()
                 .port(port)
-                .withRootDirectory(rootPath);
+                .withRootDirectory(recordingPath);
         this.wireMockServer = new WireMockServer(options);
     }
 
     public void record() {
-        File recordingRoot = new File(rootPath);
+        File recordingRoot = new File(recordingPath);
         if (recordingRoot.exists())
             if (!FilesUtils.deleteRecursive(recordingRoot))
                 throw new RuntimeException("Couldn't delete directory : " + recordingRoot.toString());
