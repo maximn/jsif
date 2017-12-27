@@ -17,7 +17,7 @@ import java.util.UUID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.jsif.Config.ROOT_PATH;
 
-public class CreateAndUseFake {
+public class SelfInitializingFakeIT {
     private final static int dummyPort = 7088;
     private final static int proxyPort = 7089;
     private final String baseUrl = "http://localhost";
@@ -41,7 +41,7 @@ public class CreateAndUseFake {
 
     @Test
     public void selfInitializedFake() throws IOException {
-        String path = "sif_path";
+        String path = "sif_recordings";
         cleanUpRecordings(path);
 
         SelfInitializedFake fake = new SelfInitializedFake(proxyPort, proxyTo, path);
@@ -63,7 +63,7 @@ public class CreateAndUseFake {
 
     @Test
     public void recordThenPlayback() throws IOException {
-        String recordingsPath = "some_path";
+        String recordingsPath = "record_then_playback";
         cleanUpRecordings(recordingsPath);
 
         // Start up recorder
