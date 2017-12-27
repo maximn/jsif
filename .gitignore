@@ -118,3 +118,7 @@ Temporary Items
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+# Created when running the tests
+src/test/resources/record_then_playback
+src/test/resources/sif_recordings
