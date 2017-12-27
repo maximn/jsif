@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/maximn/jsif.svg?branch=master)](https://travis-ci.org/maximn/jsif)
+
+
 # jsif
 Self Initializing Fake library for the JVM (inspired by [https://martinfowler.com/bliki/SelfInitializingFake.html](https://martinfowler.com/bliki/SelfInitializingFake.html))
 
