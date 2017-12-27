@@ -23,6 +23,11 @@ public class Recorder {
                 .port(port)
                 .withRootDirectory(recordingPath);
         this.wireMockServer = new WireMockServer(options);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (wireMockServer.isRunning())
+                this.stop();
+        }));
     }
 
     public void record() {
