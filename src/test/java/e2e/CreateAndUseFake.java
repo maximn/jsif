@@ -1,6 +1,8 @@
 package e2e;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import io.jsif.FilesUtils;
+import io.jsif.SelfInitializedFake;
 import io.jsif.player.FakeServer;
 import io.jsif.recorder.Recorder;
 import org.apache.http.client.fluent.Content;
@@ -8,17 +10,19 @@ import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static io.jsif.Config.ROOT_PATH;
 
 public class CreateAndUseFake {
     private final static int dummyPort = 7088;
     private final static int proxyPort = 7089;
-    private final String recordingsPath = "some_path";
     private final String baseUrl = "http://localhost";
-    private String httpPath = "/some/thing";
+    private final String httpPath = "/some/thing";
+    private final String proxyTo = baseUrl + ":" + dummyPort;
 
     private WireMockServer setUpDummyRemoteServer() {
         WireMockServer dummy = new WireMockServer(dummyPort);
@@ -36,9 +40,34 @@ public class CreateAndUseFake {
     }
 
     @Test
-    public void test() throws IOException {
+    public void selfInitializedFake() throws IOException {
+        String path = "sif_path";
+        cleanUpRecordings(path);
+
+        SelfInitializedFake fake = new SelfInitializedFake(proxyPort, proxyTo, path);
+        fake.start(); // no recording yet, so will start in `recorder mode`
+        WireMockServer dummy = setUpDummyRemoteServer();
+
+        String resultFromRemote = doHttpCall(proxyPort);
+
+        fake.stop();
+        dummy.stop();
+
+        fake.start(); // this time it should start up in `Player` mode
+
+        String recordedResult = doHttpCall(proxyPort);
+        fake.stop();
+
+        Assert.assertEquals(resultFromRemote, recordedResult);
+    }
+
+    @Test
+    public void recordThenPlayback() throws IOException {
+        String recordingsPath = "some_path";
+        cleanUpRecordings(recordingsPath);
+
         // Start up recorder
-        Recorder recorder = new Recorder(proxyPort, baseUrl + ":" + dummyPort, recordingsPath);
+        Recorder recorder = new Recorder(proxyPort, proxyTo, recordingsPath);
         recorder.record();
 
         // set up dummy server
@@ -58,6 +87,13 @@ public class CreateAndUseFake {
         // This call will go to the recorded fake
         String recordedResult = doHttpCall(proxyPort);
 
+        fakeServer.stop();
+
         Assert.assertEquals(resultFromRemote, recordedResult);
     }
+
+    private void cleanUpRecordings(String path) {
+        FilesUtils.deleteRecursive(new File(ROOT_PATH + path));
+    }
+
 }
