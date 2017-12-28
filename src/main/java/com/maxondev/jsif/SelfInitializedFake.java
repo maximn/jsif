@@ -1,13 +1,13 @@
-package io.jsif;
+package com.maxondev.jsif;
 
-import io.jsif.player.FakeServer;
-import io.jsif.recorder.Recorder;
+import com.maxondev.jsif.player.FakeServer;
+import com.maxondev.jsif.recorder.Recorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-import static io.jsif.Config.ROOT_PATH;
+import static com.maxondev.jsif.Config.ROOT_PATH;
 
 public class SelfInitializedFake {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

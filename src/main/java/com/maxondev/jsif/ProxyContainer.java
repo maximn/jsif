@@ -1,7 +1,7 @@
-package io.jsif;
+package com.maxondev.jsif;
 
-import io.jsif.player.FakeServer;
-import io.jsif.recorder.Recorder;
+import com.maxondev.jsif.player.FakeServer;
+import com.maxondev.jsif.recorder.Recorder;
 
 class ProxyContainer {
 

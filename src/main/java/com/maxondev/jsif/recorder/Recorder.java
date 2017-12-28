@@ -1,14 +1,14 @@
-package io.jsif.recorder;
+package com.maxondev.jsif.recorder;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.Options;
 import com.github.tomakehurst.wiremock.core.WireMockApp;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import io.jsif.FilesUtils;
+import com.maxondev.jsif.FilesUtils;
 
 import java.io.File;
 
-import static io.jsif.Config.ROOT_PATH;
+import static com.maxondev.jsif.Config.ROOT_PATH;
 
 public class Recorder {
     final private WireMockServer wireMockServer;

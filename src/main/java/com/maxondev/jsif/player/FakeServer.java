@@ -1,8 +1,8 @@
-package io.jsif.player;
+package com.maxondev.jsif.player;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.common.SingleRootFileSource;
-import io.jsif.Config;
+import com.maxondev.jsif.Config;
 
 public class FakeServer {
     private final WireMockServer wireMockServer;

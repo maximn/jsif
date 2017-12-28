@@ -1,4 +1,4 @@
-package io.jsif;
+package com.maxondev.jsif;
 
 import java.io.File;
 import java.util.Objects;

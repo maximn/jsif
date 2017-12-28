@@ -16,7 +16,7 @@ This class should have **`Integration Test`** to make sure that it functions cor
 
 #### *Weather.java*
 ``` java
-package io.sample.app;
+package com.maxondev.sample.app;
 
 import org.apache.http.client.fluent.Request;
 
@@ -49,9 +49,9 @@ That's how the test will look With `jsif` (Java SelfInitializingFake)
 
 #### *WeatherIT.java*
 ``` java
-package io.sample.app;
+package com.maxondev.sample.app;
 
-import io.jsif.SelfInitializedFake;
+import com.maxondev.jsif.SelfInitializedFake;
 import org.hamcrest.CoreMatchers;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -92,12 +92,12 @@ public class WeatherIT {
 
 ### How does it work?
 When running for the first time, you'll see in the log   
-``[main] INFO io.jsif.SelfInitializedFake - Starting in `Record` mode``  
+``[main] INFO com.maxondev.jsif.SelfInitializedFake - Starting in `Record` mode``  
 And the `Fake` will initialize itself - It'll proxy the communication to the real external server and record it. The communication will be persisted in into a json file (under test/resources/weather_recordings)
 
 
 The next time that you'll run it, you'll see in the log  
-``[main] INFO io.jsif.SelfInitializedFake - Starting in `Play` mode``    
+``[main] INFO com.maxondev.jsif.SelfInitializedFake - Starting in `Play` mode``    
 The `Fake` will run in `Play` mode now and it'll interact in the same way, but this time instead of proxying the traffic to the real server it'll use the persisted communication from the first run.
 
 

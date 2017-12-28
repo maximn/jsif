@@ -1,10 +1,10 @@
 package e2e;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import io.jsif.FilesUtils;
-import io.jsif.SelfInitializedFake;
-import io.jsif.player.FakeServer;
-import io.jsif.recorder.Recorder;
+import com.maxondev.jsif.FilesUtils;
+import com.maxondev.jsif.SelfInitializedFake;
+import com.maxondev.jsif.player.FakeServer;
+import com.maxondev.jsif.recorder.Recorder;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static io.jsif.Config.ROOT_PATH;
+import static com.maxondev.jsif.Config.ROOT_PATH;
 
 public class SelfInitializingFakeIT {
     private final static int dummyPort = 7088;
