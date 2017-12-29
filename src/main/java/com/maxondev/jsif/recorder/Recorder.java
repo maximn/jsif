@@ -1,10 +1,10 @@
 package com.maxondev.jsif.recorder;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.common.Slf4jNotifier;
 import com.github.tomakehurst.wiremock.core.Options;
 import com.github.tomakehurst.wiremock.core.WireMockApp;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.maxondev.jsif.FilesUtils;
 
 import java.io.File;
 
@@ -21,7 +21,8 @@ public class Recorder {
         this.recordingPath = ROOT_PATH + pathToSave;
         Options options = new WireMockConfiguration()
                 .port(port)
-                .withRootDirectory(recordingPath);
+                .withRootDirectory(recordingPath)
+                .notifier(new Slf4jNotifier(true));
         this.wireMockServer = new WireMockServer(options);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -32,9 +33,6 @@ public class Recorder {
 
     public void record() {
         File recordingRoot = new File(recordingPath);
-        if (recordingRoot.exists())
-            if (!FilesUtils.deleteRecursive(recordingRoot))
-                throw new RuntimeException("Couldn't delete directory : " + recordingRoot.toString());
         if (!(new File(recordingRoot, WireMockApp.MAPPINGS_ROOT)).mkdirs())
             throw new RuntimeException("Couldn't create directory : " + recordingRoot.toString());
 

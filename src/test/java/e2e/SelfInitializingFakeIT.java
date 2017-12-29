@@ -1,7 +1,6 @@
 package e2e;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.maxondev.jsif.FilesUtils;
 import com.maxondev.jsif.SelfInitializedFake;
 import com.maxondev.jsif.player.FakeServer;
 import com.maxondev.jsif.recorder.Recorder;

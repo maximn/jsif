@@ -28,7 +28,7 @@ if (project.hasProperty("signing.keyId")) {
 
 group = "com.maxondev.jsif"
 archivesBaseName = "jsif"
-version = "0.1.1-SNAPSHOT"
+version = "0.1.2"
 
 if (hasProperty('ossrhUsername'))
     uploadArchives {
