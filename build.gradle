@@ -28,54 +28,53 @@ if (project.hasProperty("signing.keyId")) {
 
 group = "com.maxondev.jsif"
 archivesBaseName = "jsif"
-version = "0.1.0"
+version = "0.1.1-SNAPSHOT"
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+if (hasProperty('ossrhUsername'))
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: hasProperty('ossrhUsername') ? ossrhUsername : System.getenv('ossrhUsername'),
-                        password: hasProperty('ossrhPassword') ? ossrhPassword : System.getenv('ossrhPassword'))
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: hasProperty('ossrhUsername') ? ossrhUsername : System.getenv('ossrhUsername'),
-                        password: hasProperty('ossrhPassword') ? ossrhPassword : System.getenv('ossrhPassword'))
-            }
-
-            pom.project {
-                name 'JVM Self Initializing Fake'
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description 'Self Initializing Fake library for the JVM (inspired by https://martinfowler.com/bliki/SelfInitializingFake.html)'
-                url 'https://github.com/maximn/jsif'
-
-                scm {
-                    connection 'scm:git:https://github.com/maximn/jsif.git'
-                    developerConnection 'scm:git:https://github.com/maximn/jsif.git'
-                    url 'https://github.com/maximn/jsif.git'
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
                 }
 
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                pom.project {
+                    name 'JVM Self Initializing Fake'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Self Initializing Fake library for the JVM (inspired by https://martinfowler.com/bliki/SelfInitializingFake.html)'
+                    url 'https://github.com/maximn/jsif'
+
+                    scm {
+                        connection 'scm:git:https://github.com/maximn/jsif.git'
+                        developerConnection 'scm:git:https://github.com/maximn/jsif.git'
+                        url 'https://github.com/maximn/jsif.git'
                     }
-                }
 
-                developers {
-                    developer {
-                        id 'maxim'
-                        name 'Maxim Novak'
-                        email 'maxim.novak@gmail.com'
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'maxim'
+                            name 'Maxim Novak'
+                            email 'maxim.novak@gmail.com'
+                        }
                     }
                 }
             }
         }
     }
-}
 
 repositories {
     jcenter()
