@@ -2,8 +2,6 @@ package e2e;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.maxondev.jsif.SelfInitializedFake;
-import com.maxondev.jsif.player.FakeServer;
-import com.maxondev.jsif.recorder.Recorder;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.junit.Assert;
@@ -14,9 +12,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.maxondev.jsif.Config.ROOT_PATH;
 
-public class SelfInitializingFakeIT {
+public class SelfInitializingFakeE2E {
     private final static int dummyPort = 7088;
     private final static int proxyPort = 7089;
     private final String baseUrl = "http://localhost";
@@ -43,7 +40,13 @@ public class SelfInitializingFakeIT {
         String path = "sif_recordings";
         cleanUpRecordings(path);
 
-        SelfInitializedFake fake = new SelfInitializedFake(proxyPort, proxyTo, path);
+        SelfInitializedFake fake = SelfInitializedFake
+                .builder()
+                .proxyTo(proxyTo)
+                .recordTo(path)
+                .listenOnPort(proxyPort)
+                .asAutoMode();
+
         fake.start(); // no recording yet, so will start in `recorder mode`
         WireMockServer dummy = setUpDummyRemoteServer();
 
@@ -66,8 +69,13 @@ public class SelfInitializingFakeIT {
         cleanUpRecordings(recordingsPath);
 
         // Start up recorder
-        Recorder recorder = new Recorder(proxyPort, proxyTo, recordingsPath);
-        recorder.record();
+        SelfInitializedFake recorder = SelfInitializedFake
+                .builder()
+                .proxyTo(proxyTo)
+                .recordTo(recordingsPath)
+                .listenOnPort(proxyPort)
+                .asRecorder();
+        recorder.start();
 
         // set up dummy server
         WireMockServer dummy = setUpDummyRemoteServer();
@@ -80,19 +88,25 @@ public class SelfInitializingFakeIT {
         dummy.stop();
 
         // Let's load recorded data and start the fake
-        FakeServer fakeServer = new FakeServer(proxyPort, recordingsPath);
-        fakeServer.start();
+        SelfInitializedFake fake = SelfInitializedFake
+                .builder()
+                .proxyTo(proxyTo)
+                .recordTo(recordingsPath)
+                .listenOnPort(proxyPort)
+                .asFakeServer();
+
+        fake.start();
 
         // This call will go to the recorded fake
         String recordedResult = doHttpCall(proxyPort);
 
-        fakeServer.stop();
+        fake.stop();
 
         Assert.assertEquals(resultFromRemote, recordedResult);
     }
 
     private void cleanUpRecordings(String path) {
-        FilesUtils.deleteRecursive(new File(ROOT_PATH + path));
+        FilesUtils.deleteRecursive(new File("src/test/resources/", path));
     }
 
 }
