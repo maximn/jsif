@@ -63,9 +63,12 @@ import java.io.IOException;
 public class WeatherIT {
     private static final int fakePort = 8087;
     private static final SelfInitializedFake fake =
-            new SelfInitializedFake(fakePort,
-                    "https://www.metaweather.com",
-                    "weather_recordings");
+            SelfInitializedFake
+                    .builder()
+                    .proxyTo("https://www.metaweather.com")
+                    .recordTo("weather_recordings")
+                    .listenOnPort(fakePort)
+                    .asAutoMode();
 
     @BeforeClass
     public static void setUpBeforeClass() {
@@ -78,7 +81,16 @@ public class WeatherIT {
     }
 
     @Test
-    public void forCity() throws IOException {
+    public void forCity_success() throws IOException {
+        Weather weather = new Weather("http://localhost:" + fakePort);
+
+        String res = weather.forCity("london");
+
+        Assert.assertThat(res, CoreMatchers.containsString("\"latt_long\":\"51.506321,-0.12714\""));
+    }
+
+    @Test
+    public void forCity_wrongCity_emptyResult() throws IOException {
         Weather weather = new Weather("http://localhost:" + fakePort);
 
         String res = weather.forCity("london");
