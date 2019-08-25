@@ -83,7 +83,7 @@ repositories {
 dependencies {
     testImplementation 'junit:junit:4.12'
 
-    compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.12.0'
+    compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.24.1'
     testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.4'
     testCompile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.4'
     testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
